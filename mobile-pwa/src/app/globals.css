@@ -156,6 +156,12 @@ a {
   transition: all 0.15s ease-out;
 }
 
+/* ─── Auth Tab Active State ──────────────────────────────────── */
+.mantine-Tabs-tab[data-active] {
+  color: var(--ff-ink) !important;
+  border-bottom-color: var(--ff-ink) !important;
+}
+
 /* ─── Mobile ─────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   body {

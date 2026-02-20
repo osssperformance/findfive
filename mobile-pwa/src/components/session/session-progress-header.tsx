@@ -25,8 +25,8 @@ export function SessionProgressHeader({ className }: SessionProgressHeaderProps)
       radius={0}
       p="sm"
       style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        borderBottom: '1px solid var(--mantine-color-gray-2)'
+        background: 'var(--ff-capture)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)'
       }}
       className={className}
     >

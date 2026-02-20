@@ -67,7 +67,7 @@ export function SessionProgress({ variant = 'compact', showRefresh = true, class
           sections={[{ value: progressPercentage, color: getStatusColor() }]}
           label={
             <Center>
-              <Text size="xs" fw={500}>
+              <Text size="xs" fw={600} c="white">
                 {Math.round(progressPercentage)}%
               </Text>
             </Center>
