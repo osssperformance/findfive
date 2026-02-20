@@ -11,25 +11,30 @@ import '@mantine/notifications/styles.css'
 import '@mantine/dates/styles.css'
 
 const theme = createTheme({
-  primaryColor: 'blue',
+  primaryColor: 'indigo',
   colors: {
     brand: [
-      '#FFF5F5',
-      '#FFE3E3',
-      '#FFC9C9',
-      '#FFA8A8',
-      '#FF8787',
-      '#FF6B6B',
-      '#FA5252',
-      '#F03E3E',
-      '#E03131',
-      '#C92A2A'
+      '#EFF6FF',
+      '#DBEAFE',
+      '#BFDBFE',
+      '#93C5FD',
+      '#60A5FA',
+      '#3B82F6',
+      '#2563EB',
+      '#1D4ED8',
+      '#1E40AF',
+      '#1E3A8A'
     ]
   },
   fontFamily: 'var(--font-geist-sans, -apple-system), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-  fontFamilyMonospace: 'var(--font-geist-mono, "SF Mono"), "SF Mono", Monaco, Inconsolata, "Roboto Mono", "Source Code Pro", monospace',
+  fontFamilyMonospace: 'var(--font-geist-mono, "SF Mono"), "SF Mono", Monaco, Inconsolata, monospace',
   headings: {
-    fontFamily: 'var(--font-geist-sans, -apple-system), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    fontFamily: 'var(--font-syne, var(--font-geist-sans)), sans-serif',
+    sizes: {
+      h1: { fontSize: '2rem', fontWeight: '800', lineHeight: '1.1' },
+      h2: { fontSize: '1.5rem', fontWeight: '700', lineHeight: '1.2' },
+      h3: { fontSize: '1.25rem', fontWeight: '700', lineHeight: '1.3' },
+    }
   },
   defaultRadius: 'lg',
   components: {
@@ -58,6 +63,14 @@ const theme = createTheme({
       defaultProps: {
         radius: 'xl',
         withBorder: true,
+      },
+    },
+    SegmentedControl: {
+      styles: {
+        root: {
+          backgroundColor: 'var(--ff-border-subtle)',
+          border: '1px solid var(--ff-border)',
+        },
       },
     },
   },

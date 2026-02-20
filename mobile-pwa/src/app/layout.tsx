@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Syne } from "next/font/google";
 import { ColorSchemeScript } from '@mantine/core';
 import { Providers } from './providers';
 import { AuthenticatedLayout } from '@/components/layout/authenticated-layout';
@@ -17,6 +17,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: "swap",
   preload: true,
+});
+
+const syne = Syne({
+  variable: "--font-syne",
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -46,7 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FF6B6B",
+  themeColor: "#111827",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -64,7 +71,7 @@ export default function RootLayout({
         <ColorSchemeScript defaultColorScheme="light" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} antialiased`}
       >
         <Providers>
           <AuthenticatedLayout>
