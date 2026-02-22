@@ -5,13 +5,12 @@ import {
   TextInput,
   Button,
   Paper,
-  Title,
   Text,
   Anchor,
   Stack,
-  Alert,
   Tabs,
   PasswordInput,
+  Box,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
@@ -22,53 +21,53 @@ interface AuthFormsProps {
   redirectTo?: string
 }
 
-export function AuthForms({ onSuccess, redirectTo }: AuthFormsProps) {
+const inputStyles = {
+  input: {
+    backgroundColor: 'var(--ff-bg)',
+    border: '1px solid var(--ff-border)',
+    borderRadius: 12,
+    fontSize: 15,
+  },
+  label: {
+    fontWeight: 500,
+    fontSize: 13,
+    color: 'var(--ff-ink-secondary)',
+    marginBottom: 4,
+  },
+}
+
+export function AuthForms({ onSuccess }: AuthFormsProps) {
   const [activeTab, setActiveTab] = useState<string | null>('signin')
   const [isLoading, setIsLoading] = useState(false)
 
-  // Sign In Form
   const signInForm = useForm({
-    initialValues: {
-      email: '',
-      password: '',
-    },
+    initialValues: { email: '', password: '' },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-      password: (val) => (val.length < 6 ? 'Password should include at least 6 characters' : null),
+      password: (val) => (val.length < 6 ? 'Password must be at least 6 characters' : null),
     },
   })
 
-  // Sign Up Form
   const signUpForm = useForm({
-    initialValues: {
-      email: '',
-      password: '',
-      confirmPassword: '',
-      name: '',
-    },
+    initialValues: { email: '', password: '', confirmPassword: '', name: '' },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-      password: (val) => (val.length < 6 ? 'Password should include at least 6 characters' : null),
+      password: (val) => (val.length < 6 ? 'Password must be at least 6 characters' : null),
       confirmPassword: (val, values) =>
-        val !== values.password ? 'Passwords did not match' : null,
-      name: (val) => (val.length < 2 ? 'Name should include at least 2 characters' : null),
+        val !== values.password ? 'Passwords do not match' : null,
+      name: (val) => (val.length < 2 ? 'Name must be at least 2 characters' : null),
     },
   })
-
 
   const handleSignIn = async (values: { email: string; password: string }) => {
     setIsLoading(true)
     try {
       await authActions.signInWithEmailPassword(values.email, values.password)
-      notifications.show({
-        title: 'Success',
-        message: 'Signed in successfully!',
-        color: 'green',
-      })
+      notifications.show({ title: 'Welcome back', message: 'Signed in successfully', color: 'green' })
       onSuccess?.()
     } catch (error) {
       notifications.show({
-        title: 'Sign In Failed',
+        title: 'Sign in failed',
         message: error instanceof Error ? error.message : 'An error occurred',
         color: 'red',
       })
@@ -82,14 +81,14 @@ export function AuthForms({ onSuccess, redirectTo }: AuthFormsProps) {
     try {
       await authActions.signUpWithEmailPassword(values.email, values.password, values.name)
       notifications.show({
-        title: 'Success',
-        message: 'Account created! Please check your email to verify your account.',
+        title: 'Account created',
+        message: 'Check your email to verify your account',
         color: 'green',
       })
       onSuccess?.()
     } catch (error) {
       notifications.show({
-        title: 'Sign Up Failed',
+        title: 'Sign up failed',
         message: error instanceof Error ? error.message : 'An error occurred',
         color: 'red',
       })
@@ -98,90 +97,147 @@ export function AuthForms({ onSuccess, redirectTo }: AuthFormsProps) {
     }
   }
 
-  // Magic link functionality temporarily disabled
-
   return (
-    <Paper radius="md" p="xl" withBorder>
-      <Title order={2} ta="center" mt="md" mb="md">
-        Welcome to Find Five
-      </Title>
-
-      <Tabs value={activeTab} onChange={setActiveTab}>
-        <Tabs.List grow>
+    <Paper
+      radius="xl"
+      p="xl"
+      withBorder={false}
+      style={{
+        background: 'white',
+        boxShadow: '0 8px 40px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04)',
+        border: '1px solid var(--ff-border)',
+      }}
+    >
+      <Tabs
+        value={activeTab}
+        onChange={setActiveTab}
+        styles={{
+          list: {
+            borderBottom: '1px solid var(--ff-border)',
+            marginBottom: 24,
+            gap: 0,
+          },
+          tab: {
+            fontWeight: 500,
+            fontSize: 14,
+            color: 'var(--ff-ink-tertiary)',
+            paddingBottom: 12,
+            paddingTop: 4,
+          },
+        }}
+      >
+        <Tabs.List>
           <Tabs.Tab value="signin">Sign In</Tabs.Tab>
           <Tabs.Tab value="signup">Sign Up</Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel value="signin" pt="md">
+        <Tabs.Panel value="signin">
           <form onSubmit={signInForm.onSubmit(handleSignIn)}>
-            <Stack>
+            <Stack gap="md">
               <TextInput
                 required
                 label="Email"
                 placeholder="your@email.com"
+                styles={inputStyles}
                 {...signInForm.getInputProps('email')}
               />
               <PasswordInput
                 required
                 label="Password"
                 placeholder="Your password"
+                styles={inputStyles}
                 {...signInForm.getInputProps('password')}
               />
-              <Button type="submit" loading={isLoading} fullWidth>
-                Sign In
-              </Button>
+              <Box mt={4}>
+                <Button
+                  type="submit"
+                  loading={isLoading}
+                  fullWidth
+                  radius="xl"
+                  size="md"
+                  style={{
+                    background: 'var(--ff-ink)',
+                    color: 'white',
+                    fontWeight: 600,
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  Sign In
+                </Button>
+              </Box>
             </Stack>
           </form>
-          
-          <Text ta="center" mt="md">
-            Don&apos;t have an account?{' '}
-            <Anchor onClick={() => setActiveTab('signup')}>
+          <Text ta="center" size="sm" mt="lg" style={{ color: 'var(--ff-ink-tertiary)' }}>
+            No account?{' '}
+            <Anchor
+              onClick={() => setActiveTab('signup')}
+              style={{ color: 'var(--ff-accent)', fontWeight: 500 }}
+            >
               Sign up
             </Anchor>
           </Text>
         </Tabs.Panel>
 
-        <Tabs.Panel value="signup" pt="md">
+        <Tabs.Panel value="signup">
           <form onSubmit={signUpForm.onSubmit(handleSignUp)}>
-            <Stack>
+            <Stack gap="md">
               <TextInput
                 required
                 label="Name"
                 placeholder="Your full name"
+                styles={inputStyles}
                 {...signUpForm.getInputProps('name')}
               />
               <TextInput
                 required
                 label="Email"
                 placeholder="your@email.com"
+                styles={inputStyles}
                 {...signUpForm.getInputProps('email')}
               />
               <PasswordInput
                 required
                 label="Password"
                 placeholder="Create a password"
+                styles={inputStyles}
                 {...signUpForm.getInputProps('password')}
               />
               <PasswordInput
                 required
                 label="Confirm Password"
                 placeholder="Confirm your password"
+                styles={inputStyles}
                 {...signUpForm.getInputProps('confirmPassword')}
               />
-              <Button type="submit" loading={isLoading} fullWidth>
-                Sign Up
-              </Button>
+              <Box mt={4}>
+                <Button
+                  type="submit"
+                  loading={isLoading}
+                  fullWidth
+                  radius="xl"
+                  size="md"
+                  style={{
+                    background: 'var(--ff-ink)',
+                    color: 'white',
+                    fontWeight: 600,
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  Create Account
+                </Button>
+              </Box>
             </Stack>
           </form>
-          
-          <Text ta="center" mt="md">
+          <Text ta="center" size="sm" mt="lg" style={{ color: 'var(--ff-ink-tertiary)' }}>
             Already have an account?{' '}
-            <Anchor onClick={() => setActiveTab('signin')}>
+            <Anchor
+              onClick={() => setActiveTab('signin')}
+              style={{ color: 'var(--ff-accent)', fontWeight: 500 }}
+            >
               Sign in
             </Anchor>
           </Text>
         </Tabs.Panel>
-
       </Tabs>
     </Paper>
   )

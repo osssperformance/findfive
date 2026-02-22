@@ -22,8 +22,10 @@ export const auth = betterAuth({
     updateAge: 60 * 60 * 24, // 1 day
   },
   trustedOrigins: [
-    process.env.BETTER_AUTH_URL || "http://localhost:3000",
+    process.env.BETTER_AUTH_URL || "http://localhost:3002",
+    "http://localhost:3003", // Desktop app local
     ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
+    ...(process.env.DESKTOP_APP_URL ? [process.env.DESKTOP_APP_URL] : []), // Desktop app production
   ],
   logger: {
     level: process.env.NODE_ENV === "development" ? "debug" : "warn",

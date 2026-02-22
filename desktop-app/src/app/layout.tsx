@@ -1,5 +1,4 @@
-import { MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
+import { Providers } from './providers';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import './globals.css';
@@ -17,10 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <MantineProvider>
-          <Notifications />
+        <Providers>
           {children}
-        </MantineProvider>
+        </Providers>
       </body>
     </html>
   );
