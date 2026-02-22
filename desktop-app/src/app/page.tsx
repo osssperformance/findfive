@@ -1,15 +1,39 @@
-import { Container, Title, Text, Paper, Stack } from '@mantine/core';
+'use client'
 
-export default function HomePage() {
+import { Container, Title, Text, Paper, Stack, Button, Group } from '@mantine/core';
+import { AuthGuard } from '@/components/auth/auth-guard';
+import { useAuth, authActions } from '@/lib/auth-client';
+
+function HomePage() {
+  const { user, isAuthenticated } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await authActions.signOutUser();
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
   return (
     <Container size="lg" py="xl">
       <Stack gap="xl">
         <Paper p="xl" withBorder radius="md">
           <Stack gap="md" align="center">
-            <Title order={1}>Find Five Desktop</Title>
+            <Group justify="space-between" w="100%">
+              <div></div>
+              <Title order={1}>Find Five Desktop</Title>
+              <Button variant="subtle" onClick={handleSignOut}>
+                Sign Out
+              </Button>
+            </Group>
             <Text size="lg" ta="center" c="dimmed">
               Task Categorization & Management Interface
             </Text>
+            {user && (
+              <Text ta="center" c="blue">
+                Welcome back, {user.name || user.email}!
+              </Text>
+            )}
             <Text ta="center">
               This is the desktop version of Find Five focused on categorizing 
               and managing tasks recorded from the mobile app using the Eisenhower Matrix.
@@ -39,5 +63,13 @@ export default function HomePage() {
         </Paper>
       </Stack>
     </Container>
+  );
+}
+
+export default function AuthenticatedHomePage() {
+  return (
+    <AuthGuard>
+      <HomePage />
+    </AuthGuard>
   );
 }
